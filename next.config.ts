@@ -1,7 +1,11 @@
-import type { NextConfig } from "next";
+import { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  output: 'export', // Amplifyの静的ホスティング向けに設定
+  reactStrictMode: true,
+  images: {
+    unoptimized: true, // AmplifyではNext.jsの画像最適化が動作しないため無効化
+  },
 };
 
 export default nextConfig;
