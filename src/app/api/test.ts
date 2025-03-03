@@ -8,11 +8,6 @@ export default async function handler(req, res) {
         // body: JSON.stringify({ name: "山崎" }),
     });
 
-    // {
-    //     "method": "POST",
-    //     "headers": { "Content-Type": "application/json" },
-    //     "body": "{\"name\": \"山崎\"}"
-    //   }
 
     const data = await response.json();
     res.status(200).json(data);
