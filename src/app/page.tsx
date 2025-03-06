@@ -7,7 +7,7 @@ export default function Home() {
   // Lambda API を呼び出す関数
   const callLambdaAPI = async () => {
     try {
-      const response = await fetch("/api/test", {
+      const response = await fetch("/api/measureDistanceColors", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name: "Alice" }),
