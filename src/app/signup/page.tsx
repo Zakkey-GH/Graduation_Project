@@ -33,48 +33,48 @@ const handleSignUp = async () => {
 };
 
 return (
-<div className="container mx-auto max-w-md py-8">
+  <div className="container mx-auto max-w-md py-8">
     <Card>
-    <CardHeader>
+      <CardHeader>
         <h1 className="text-2xl font-bold text-center">アカウント作成</h1>
-    </CardHeader>
-    <CardContent>
+      </CardHeader>
+      <CardContent>
         <div className="space-y-4">
-        <div className="space-y-2">
+          <div className="space-y-2">
             <Label htmlFor="email">メールアドレス</Label>
             <Input
-            id="email"
-            type="email"
-            placeholder="example@example.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
+              id="email"
+              type="email"
+              placeholder="example@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
             />
-        </div>
-        <div className="space-y-2">
+          </div>
+          <div className="space-y-2">
             <Label htmlFor="password">パスワード</Label>
             <Input
-            id="password"
-            type="password"
-            placeholder="********"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
+              id="password"
+              type="password"
+              placeholder="********"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
             />
+          </div>
         </div>
-        </div>
-    </CardContent>
-    <CardFooter>
+      </CardContent>
+      <CardFooter>
         <Button onClick={handleSignUp} className="w-full">
-        アカウントを作成
+          アカウントを作成
         </Button>
-    </CardFooter>
+      </CardFooter>
     </Card>
     {message && (
-    <Alert className="mt-4">
+      <Alert className="mt-4">
         <AlertDescription>{message}</AlertDescription>
-    </Alert>
+      </Alert>
     )}
-</div>
+  </div>
 );
 }

@@ -1,8 +1,5 @@
 "use client";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import Image from "next/image";
 
 export default function Home() {
   const [message, setMessage] = useState("");
@@ -29,70 +26,12 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
-      {/* ヘッダー */}
-      <header className="fixed w-full bg-white/80 backdrop-blur-md border-b z-50">
-        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Image
-              src="/logo.svg"
-              alt="ロゴ"
-              width={32}
-              height={32}
-              className="dark:invert"
-            />
-            <span className="font-bold text-xl">サービス名</span>
-          </div>
-          
-          {/* メニューバー */}
-          <nav className="hidden md:flex items-center gap-6">
-            <a href="#features" className="hover:text-primary transition-colors">
-              機能
-            </a>
-            <a href="#pricing" className="hover:text-primary transition-colors">
-              料金
-            </a>
-            <a href="#contact" className="hover:text-primary transition-colors">
-              お問い合わせ
-            </a>
-            <Link href="/signup">
-              <Button className="bg-primary text-white hover:bg-primary/90">
-                サービス開始
-              </Button>
-            </Link>
-          </nav>
-
-          {/* モバイルメニュー用ボタン */}
-          <Button variant="ghost" className="md:hidden">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="3" y1="12" x2="21" y2="12"></line>
-              <line x1="3" y1="6" x2="21" y2="6"></line>
-              <line x1="3" y1="18" x2="21" y2="18"></line>
-            </svg>
-          </Button>
-        </div>
-      </header>
-
-      {/* メインコンテンツ */}
-      <main className="flex-1 pt-16">
-        {/* ヒーローセクション */}
-        <section className="container mx-auto px-4 py-20 text-center">
-          <h1 className="text-4xl md:text-6xl font-bold mb-6">
-            あなたのビジネスを
-            <br />
-            次のレベルへ
-          </h1>
-          <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
-            革新的なソリューションで、ビジネスの可能性を広げます。
-            簡単な操作で、すぐに始められます。
-          </p>
-          <Link href="/signup">
-            <Button className="bg-primary text-white hover:bg-primary/90 h-12 px-8 text-lg">
-              無料で始める
-            </Button>
-          </Link>
-        </section>
-      </main>
+    <div style={{ textAlign: "center", marginTop: "50px" }}>
+      <h1>AWS Lambda API 実行テスト</h1>
+      <button onClick={callLambdaAPI} style={{ padding: "10px 20px", fontSize: "16px" }}>
+        Lambda API を実行
+      </button>
+      <p>レスポンス: {message}</p>
     </div>
   );
 }
