@@ -2,38 +2,38 @@
 import { useState } from "react";
 
 export default function Home() {
-  const [message, setMessage] = useState("");
+const [message, setMessage] = useState("");
 
-  // Lambda API を呼び出す関数
-  const callLambdaAPI = async () => {
+// Lambda API を呼び出す関数
+const callLambdaAPI = async () => {
     try {
-      const response = await fetch("/api/test", {
+    const response = await fetch("/api/measureDistanceColors", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: "Alice" }),
-      });
+        body: JSON.stringify({ path: "./public/images/Ben_4.png" }),
+    });
 
-      if (!response.ok) {
+    if (!response.ok) {
         throw new Error("API エラーが発生しました");
-      }
-
-      const data = await response.json();
-      setMessage(data.message); // Lambda からのレスポンスをセット
-    } catch (error) {
-      console.error("エラー:", error);
-      setMessage("API リクエストに失敗しました");
     }
-  };
 
-  return (
+    const data = await response.json();
+    setMessage(data.message); // Lambda からのレスポンスをセット
+    } catch (error) {
+    console.error("エラー:", error);
+    setMessage("API リクエストに失敗しました");
+    }
+};
+
+return (
     <div style={{ textAlign: "center", marginTop: "50px" }}>
-      <h1>AWS Lambda API 実行テスト</h1>
-      <button onClick={callLambdaAPI} style={{ padding: "10px 20px", fontSize: "16px" }}>
+    <h1>AWS Lambda API 実行テスト</h1>
+    <button onClick={callLambdaAPI} style={{ padding: "10px 20px", fontSize: "16px" }}>
         Lambda API を実行
-      </button>
-      <p>レスポンス: {message}</p>
+    </button>
+    <p>レスポンス: {message}</p>
     </div>
-  );
+);
 }
 
 

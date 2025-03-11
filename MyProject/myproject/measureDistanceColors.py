@@ -89,3 +89,37 @@ def lambda_handler(event, context):
             })
         }
 
+
+
+
+
+
+
+
+
+image = cv2.imread(image_path)
+
+if image is None:
+    print("画像を読み込めませんでした。ファイルパスを確認してください。")
+else:
+    # フレームの中心部分を対象領域として抽出
+    h, w, _ = image.shape
+    frame_size = 100
+    start_x, start_y = w // 2 - frame_size // 2, h // 2 - frame_size // 2
+    end_x, end_y = w // 2 + frame_size // 2, h // 2 + frame_size // 2
+    roi = image[start_y:end_y, start_x:end_x]
+
+    # ROIの平均色を計算
+    avg_color = cv2.mean(roi)[:3]
+    avg_color = np.array(avg_color[::-1])  # OpenCVはBGRなのでRGBに変換
+
+    # データベース内で最も近い色を計算
+    closest_entry, distance = find_closest_color(avg_color)
+
+    # 結果を判定
+    threshold = 50  # 距離が大きい場合は対象範囲外。※cv2は日本語不可
+    if distance > threshold:
+        text = "out of range"
+    else:
+        text = f"Value: {closest_entry['value']} (distance: {distance:.2f})"
+    print(text)
