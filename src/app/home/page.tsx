@@ -29,7 +29,7 @@ export default function HomePage() {
         {/* ヒーローセクション */}
         <section className="mb-16 text-center">
           <h1 className="mb-6 text-4xl font-bold tracking-tight text-gray-900 md:text-6xl">
-            お便り管理システム
+            PeLeche
           </h1>
           <p className="mx-auto mb-8 max-w-2xl text-lg text-gray-600">
             簡単・便利なお便り管理で、コミュニケーションをもっとスムーズに
