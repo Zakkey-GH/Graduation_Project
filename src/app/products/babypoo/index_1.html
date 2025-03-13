@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camera Capture with PHP and Python</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1 style="text-align: center;">カメラで撮影し、画像認識を実行</h1>
+
+    <!-- カメラ映像とフレーム -->
+    <div id="camera-container">
+        <video id="camera" autoplay playsinline></video>
+        <div id="frame"></div>
+    </div>
+    
+    <!-- プレビュー表示 -->
+    <img id="preview" alt="Captured Image" />
+
+    <!-- ボタン -->
+    <button id="capture">撮影する</button>
+
+    <form action="post.php" method="post" enctype="multipart/form-data">
+        <label for="upload" class="uploadlabel">画像を選択</label>
+        <input style="display: none;" type="file" name="image" required id="upload"><br>
+        <textarea class="caption" name="caption" placeholder="キャプションを入力"></textarea><br>
+        <button class="submitBtn" type="submit">投稿</button>
+        <button class="modal-close-btn">閉じる</button>
+    </form>
+
+    <script>
+        $(document).ready(function () {
+            const video = $('#camera')[0];
+            const frame = $('#frame');
+            const preview = $('#preview');
+            let capturedImage = null; // 撮影された画像データを一時保存
+
+            // カメラを起動
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then((stream) => {
+                    video.srcObject = stream; // カメラの映像を<video>タグに設定
+                })
+                .catch((error) => {
+                    console.error('カメラの起動エラー:', error);
+                });
+
+            // 撮影ボタンのイベントハンドラー
+            $('#capture').on('click', function () {
+                // Canvasを作成してフレーム内を描画
+                const canvas = document.createElement('canvas');
+                const frameWidth = frame.width();
+                const frameHeight = frame.height();
+                canvas.width = frameWidth;
+                canvas.height = frameHeight;
+                const ctx = canvas.getContext('2d');
+
+                // 映像全体とフレームのサイズをスケール計算
+                const scale = video.videoWidth / $(video).width();
+                ctx.drawImage(
+                    video,
+                    frame.position().left * scale,
+                    frame.position().top * scale,
+                    frameWidth * scale,
+                    frameHeight * scale,
+                    0,
+                    0,
+                    frameWidth,
+                    frameHeight
+                );
+
+                // 画像データを取得してプレビュー表示
+                capturedImage = canvas.toDataURL('image/png'); // 撮影画像を保存
+                preview.attr('src', capturedImage); // プレビューに画像を表示
+            });
+
+            // 解析ボタンのイベントハンドラー
+            $('#analyze').on('click', function () {
+                if (!capturedImage) {
+                    alert('画像が撮影されていません！');
+                    return;
+                }
+
+                // サーバーに画像データを送信
+                // $.post('upload.php', { image: capturedImage }, function (response) {
+                //     console.log('サーバー応答:', response);
+                //     alert(`解析結果: ${response.output || 'エラーが発生しました。'}`);
+                // }, 'json').fail(function () {
+                //     alert('画像の送信に失敗しました。');
+                // });
+            });
+        });
+    </script>
+</body>
+</html>
