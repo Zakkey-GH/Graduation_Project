@@ -4,11 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
-
-interface CameraProps {
-  width: number;
-  height: number;
-}
+import Image from 'next/image';
 
 export default function BabypooCameraPage() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -18,13 +14,15 @@ export default function BabypooCameraPage() {
 
   // カメラの初期設定
   useEffect(() => {
+    let mounted = true;
+
     const initCamera = async () => {
       try {
         const mediaStream = await navigator.mediaDevices.getUserMedia({ video: true });
-        if (videoRef.current) {
+        if (mounted && videoRef.current) {
           videoRef.current.srcObject = mediaStream;
+          setStream(mediaStream);
         }
-        setStream(mediaStream);
       } catch (error) {
         console.error('カメラの起動エラー:', error);
       }
@@ -32,8 +30,8 @@ export default function BabypooCameraPage() {
 
     initCamera();
 
-    // クリーンアップ関数
     return () => {
+      mounted = false;
       if (stream) {
         stream.getTracks().forEach(track => track.stop());
       }
@@ -101,11 +99,13 @@ export default function BabypooCameraPage() {
         <Card className="p-4">
           <div className="space-y-4">
             {capturedImage && (
-              <img
-                src={capturedImage}
-                alt="Captured"
-                className="w-full rounded-lg"
-              />
+              <div className="w-full aspect-video">
+                <img
+                  src={capturedImage}
+                  alt="撮影した画像"
+                  className="w-full h-full object-cover rounded-lg"
+                />
+              </div>
             )}
             <form className="space-y-4">
               <div>

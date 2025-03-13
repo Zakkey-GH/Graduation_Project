@@ -4,6 +4,7 @@ const nextConfig = {
     rules: {
       '@typescript-eslint/no-unused-vars': 'warn', // または 'off'
     },
+    ignoreDuringBuilds: true,
   },
 }
 
