@@ -1,9 +1,10 @@
 'use client'
 
-import { Suspense } from "react"
+import { Suspense, useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Mail, History } from "lucide-react"
 import { useRouter } from "next/navigation"
+import { supabase } from "../lib/supabase"
 
 interface ActionButtonProps {
 icon: React.ReactNode
@@ -33,6 +34,27 @@ return (
 }
 
 export default function HomePage() {
+const [user, setUser] = useState<any>(null)
+
+useEffect(() => {
+    // 現在のユーザー情報を取得
+    const getCurrentUser = async () => {
+    const { data: { user } } = await supabase.auth.getUser()
+    setUser(user)
+    }
+
+    getCurrentUser()
+}, [])
+
+// DBの操作例
+const handleDatabaseOperation = async () => {
+    const { data, error } = await supabase
+    .from('your_table')
+    .insert([
+        { user_id: user?.id, /* その他のデータ */ }
+    ])
+}
+
 return (
     <main className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
     <div className="container mx-auto px-4 py-12 md:py-24">

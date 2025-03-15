@@ -7,8 +7,10 @@ import { Input } from "@/components/ui/input";
 import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useRouter } from "next/navigation";
 
 export default function SignUp() {
+const router = useRouter();
 const [email, setEmail] = useState("");
 const [password, setPassword] = useState("");
 const [message, setMessage] = useState("");
@@ -24,7 +26,10 @@ const handleSignUp = async () => {
         setMessage(`Error: ${error.message}`);
         console.error('Signup error:', error);
     } else {
-        setMessage(`User signed up: ${data.user?.email}`);
+        setMessage(`${data.user?.email} でアカウントを作成しました。\nまもなく画面が変わります。`);
+        setTimeout(() => {
+            router.push('/home');
+        }, 3000);
     }
     } catch (e) {
     console.error('Unexpected error:', e);
