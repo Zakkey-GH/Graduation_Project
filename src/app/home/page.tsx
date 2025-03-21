@@ -61,10 +61,10 @@ return (
         {/* ヒーローセクション */}
         <section className="mb-16 text-center">
         <h1 className="mb-6 text-4xl font-bold tracking-tight text-gray-900 md:text-6xl">
-            PheLeChe
+            PeLeChe
         </h1>
         <p className="mx-auto mb-8 max-w-2xl text-lg text-gray-600">
-        お便り管理でベビュニケーションをもっと手軽に
+            お便り管理で、ベビュニケーションをもっと手軽に
         </p>
         </section>
 
@@ -107,7 +107,7 @@ return (
 const features = [
 {
     title: "簡単操作",
-    description: "誰でも簡単にお便りをCheck!",
+    description: "誰でも簡単にお便りCheck!",
 },
 {
     title: "助かる日記",
@@ -115,6 +115,6 @@ const features = [
 },
 {
     title: "安全な管理",
-    description: "ベビの大切なお便りを安全に保管します。",
+    description: "ベビの大切なお便りを安全管理。",
 },
 ] 
