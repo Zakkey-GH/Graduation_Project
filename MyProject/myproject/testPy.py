@@ -1,4 +1,5 @@
 import json
+#devでの開発内容をmainにマージしてpushしてもデプロイされないので空編集
 
 def lambda_handler(event, context):
     # リクエストのデータを取得
