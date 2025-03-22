@@ -91,7 +91,7 @@ const handleSubmit = async (e: React.FormEvent) => {
     const formData = new FormData();
     formData.append('image', blob, 'capture.png');
 
-    const response = await fetch('/api/imagePost', {
+    const response = await fetch('/api/measureDistanceColors', {
         method: 'POST',
         body: formData,
     });

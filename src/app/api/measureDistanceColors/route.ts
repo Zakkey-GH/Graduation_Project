@@ -1,12 +1,26 @@
 import { NextResponse } from 'next/server';
 
-export async function POST() {
-    const response = await fetch("https://hq3d4xbkh9.execute-api.us-east-1.amazonaws.com/testPy", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ path: "./public/images/Ben_7.png" }),
+export async function POST(request: Request) {
+  try {
+    const formData = await request.formData();
+    
+    const response = await fetch('https://87ieby2cyh.execute-api.us-east-1.amazonaws.com/MeasureDistanceColors', {
+      method: 'POST',
+      body: formData,
     });
 
+    if (!response.ok) {
+      throw new Error('Lambda APIリクエストに失敗しました');
+    }
+
     const data = await response.json();
+    
     return NextResponse.json(data);
+  } catch (error) {
+    console.error('エラー:', error);
+    return NextResponse.json(
+      { message: 'サーバーエラーが発生しました' },
+      { status: 500 }
+    );
+  }
 } 
