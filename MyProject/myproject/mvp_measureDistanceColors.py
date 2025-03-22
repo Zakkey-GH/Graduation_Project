@@ -84,7 +84,8 @@ def lambda_handler(event, context):
                             },
                             'body': json.dumps({
                                 'message': '画像を解析しました',
-                                'result': result_text
+                                'result': result_text,
+                                'avgColor': avg_color.tolist()
                             })
                         }
 

@@ -13,6 +13,7 @@ const frameRef = useRef<HTMLDivElement>(null);
 const [apiResponse, setApiResponse] = useState<{
   message: string;
   result?: string;
+  avgColor?: number[];
 } | null>(null);
 const [isLoading, setIsLoading] = useState(false);
 
@@ -195,6 +196,17 @@ return (
                 <p className="text-sm">{apiResponse.message}</p>
                 {apiResponse.result && (
                 <p className="text-sm font-medium">{apiResponse.result}</p>
+                )}
+                {apiResponse.avgColor && (
+                <div className="flex items-center gap-2">
+                    <div 
+                    className="w-8 h-8 rounded-full border"
+                    style={{
+                        backgroundColor: `rgb(${apiResponse.avgColor[0]}, ${apiResponse.avgColor[1]}, ${apiResponse.avgColor[2]})`
+                    }}
+                    />
+                    <p className="text-sm">AIが認識した色: RGB({Math.round(apiResponse.avgColor[0])}, {Math.round(apiResponse.avgColor[1])}, {Math.round(apiResponse.avgColor[2])})</p>
+                </div>
                 )}
             </div>
             )}
