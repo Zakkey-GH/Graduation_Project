@@ -10,7 +10,10 @@ const videoRef = useRef<HTMLVideoElement>(null);
 const [capturedImage, setCapturedImage] = useState<string | null>(null);
 const [stream, setStream] = useState<MediaStream | null>(null);
 const frameRef = useRef<HTMLDivElement>(null);
-const [apiResponse, setApiResponse] = useState<string>('');
+const [apiResponse, setApiResponse] = useState<{
+  message: string;
+  result?: string;
+} | null>(null);
 const [isLoading, setIsLoading] = useState(false);
 
 // カメラの初期設定
@@ -101,10 +104,10 @@ const handleSubmit = async (e: React.FormEvent) => {
     }
 
     const data = await response.json();
-    setApiResponse(data.message);
+    setApiResponse(data);  // 完全なレスポンスオブジェクトを保存
     } catch (error) {
     console.error('エラー:', error);
-    setApiResponse('エラーが発生しました');
+    setApiResponse({ message: 'エラーが発生しました' });
     } finally {
     setIsLoading(false);
     }
@@ -188,8 +191,11 @@ return (
             </form>
 
             {apiResponse && (
-            <div className="mt-4 p-4 bg-gray-100 rounded-lg">
-                <p className="text-sm">{apiResponse}</p>
+            <div className="mt-4 p-4 bg-gray-100 rounded-lg space-y-2">
+                <p className="text-sm">{apiResponse.message}</p>
+                {apiResponse.result && (
+                <p className="text-sm font-medium">{apiResponse.result}</p>
+                )}
             </div>
             )}
         </div>
