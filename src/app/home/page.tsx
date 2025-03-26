@@ -3,7 +3,7 @@
 import { Suspense, useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Mail, History } from "lucide-react"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { supabase } from "../lib/supabase"
 
 interface ActionButtonProps {
@@ -34,6 +34,9 @@ return (
 }
 
 export default function HomePage() {
+const router = useRouter()
+const searchParams = useSearchParams()
+const email = searchParams.get('email') // クエリパラメータからメールアドレスを取得
 const [user, setUser] = useState<any>(null)
 
 useEffect(() => {
@@ -58,6 +61,11 @@ const handleDatabaseOperation = async () => {
 return (
     <main className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
     <div className="container mx-auto px-4 py-12 md:py-24">
+        {/* ヘッダーセクション */}
+        <header className="mb-6 text-center">
+            <h1 className="text-2xl font-bold">ようこそ、{email}さん！</h1>
+        </header>
+
         {/* ヒーローセクション */}
         <section className="mb-16 text-center">
         <h1 className="mb-6 text-4xl font-bold tracking-tight text-gray-900 md:text-6xl">

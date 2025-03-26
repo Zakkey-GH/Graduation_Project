@@ -28,7 +28,7 @@ const handleSignUp = async () => {
     } else {
         setMessage(`${data.user?.email} でアカウントを作成しました。\nまもなく画面が変わります。`);
         setTimeout(() => {
-            router.push('/home');
+            router.push(`/home?email=${encodeURIComponent(data.user?.email || '')}`);
         }, 3000);
     }
     } catch (e) {
