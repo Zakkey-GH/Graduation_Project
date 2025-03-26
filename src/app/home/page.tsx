@@ -34,7 +34,6 @@ return (
 }
 
 export default function HomePage() {
-const router = useRouter()
 const searchParams = useSearchParams()
 const email = searchParams.get('email') // クエリパラメータからメールアドレスを取得
 const [user, setUser] = useState<any>(null)
