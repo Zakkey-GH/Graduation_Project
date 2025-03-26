@@ -194,8 +194,33 @@ return (
             {apiResponse && (
             <div className="mt-4 p-4 bg-gray-100 rounded-lg space-y-2">
                 <p className="text-sm">{apiResponse.message}</p>
+                
                 {apiResponse.result && (
-                <p className="text-sm font-medium">{apiResponse.result}</p>
+                    <>
+                        <p className="text-sm font-medium">{apiResponse.result}</p>
+                        {apiResponse.result.startsWith("Value:") && (
+                            <>
+                                {(() => {
+                                    const value = parseInt(apiResponse.result.split(":")[1].trim(), 10);
+                                    let advice = '';
+                                    console.log(value);
+                                    console.log("テスト");
+                                    if (value >= 1 && value <= 3) {
+                                        advice = '１日も早く便を持参して、小児科を受診してください。';
+                                    } else if (value === 4) {
+                                        advice = '今後の変化に注視してください。';
+                                    } else if (value >= 5 && value <= 7) {
+                                        advice = '胆道閉鎖症の可能性は低いですがチェックを続けてください。';
+                                    }
+
+                                    return <p className="text-sm">{`babyの便は${value}番に近い色です。${advice}`}</p>;
+                                })()}
+                            </>
+                        )}
+                        {apiResponse.result === "out of range" && (
+                            <p className="text-sm">便色カードから離れた色が検出されました。必要に応じて小児科を受診してください。</p>
+                        )}
+                    </>
                 )}
                 {apiResponse.avgColor && (
                 <div className="flex items-center gap-2">
