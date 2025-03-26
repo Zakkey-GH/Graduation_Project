@@ -53,7 +53,7 @@ const handleDatabaseOperation = async () => {
     const { data, error } = await supabase
     .from('your_table')
     .insert([
-        { user_id: user?.id, /* その他のデータ */ }
+        { user_id: user?.id, /* その他のデータ 　*/ }
     ])
 }
 
