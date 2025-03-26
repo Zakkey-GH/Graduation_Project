@@ -16,6 +16,7 @@ const [apiResponse, setApiResponse] = useState<{
   avgColor?: number[];
 } | null>(null);
 const [isLoading, setIsLoading] = useState(false);
+const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
 // カメラの初期設定
 useEffect(() => {
@@ -73,6 +74,42 @@ const handleCapture = () => {
     );
 
     setCapturedImage(canvas.toDataURL('image/png'));
+};
+
+// ファイル選択処理
+const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+        setSelectedFile(e.target.files[0]);
+    }
+};
+
+// 選択したファイルをAPIに送信する関数
+const handleFileSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedFile) return;
+
+    setIsLoading(true);
+    try {
+        const formData = new FormData();
+        formData.append('image', selectedFile);
+
+        const response = await fetch('/api/measureDistanceColors', {
+            method: 'POST',
+            body: formData,
+        });
+
+        if (!response.ok) {
+            throw new Error('APIリクエストに失敗しました');
+        }
+
+        const data = await response.json();
+        setApiResponse(data);
+    } catch (error) {
+        console.error('エラー:', error);
+        setApiResponse({ message: 'エラーが発生しました' });
+    } finally {
+        setIsLoading(false);
+    }
 };
 
 // 画像をAPIに送信する関数
@@ -156,16 +193,17 @@ return (
                 <Input
                 type="file"
                 accept="image/*"
-                id="upload"
+                id="file-upload"
+                onChange={handleFileChange}
                 className="hidden"
                 />
                 <Button
-                onClick={() => document.getElementById('upload')?.click()}
+                onClick={() => document.getElementById('file-upload')?.click()}
                 type="button"
                 variant="outline"
                 className="w-full"
                 >
-                画像を選択
+                ファイルから選択
                 </Button>
             </div>
             <Textarea
@@ -174,17 +212,29 @@ return (
             />
             <div className="flex gap-4">
                 <Button 
-                type="submit" 
+                type="button" 
                 className="flex-1"
+                onClick={handleSubmit}
                 disabled={isLoading || !capturedImage}
                 >
-                {isLoading ? '送信中...' : '投稿'}
+                {isLoading ? '送信中...' : '撮影した画像を投稿'}
+                </Button>
+                <Button 
+                type="button" 
+                className="flex-1"
+                onClick={handleFileSubmit}
+                disabled={isLoading || !selectedFile}
+                >
+                {isLoading ? '送信中...' : '選択したファイルを投稿'}
                 </Button>
                 <Button 
                 type="button" 
                 variant="outline" 
                 className="flex-1"
-                onClick={() => setCapturedImage(null)}
+                onClick={() => {
+                    setCapturedImage(null);
+                    setSelectedFile(null);
+                }}
                 >
                 キャンセル
                 </Button>
