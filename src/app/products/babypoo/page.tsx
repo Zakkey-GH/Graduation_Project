@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
+import { supabase } from '@/app/lib/supabase'; // Supabaseの設定をインポート
 
 export default function BabypooCameraPage() {
 const videoRef = useRef<HTMLVideoElement>(null);
@@ -151,6 +152,34 @@ const handleSubmit = async (e: React.FormEvent) => {
     }
 };
 
+// 結果を保存する関数
+const saveResult = async () => {
+    if (!apiResponse || !apiResponse.avgColor) return;
+
+    const colorCodeValue = Math.round(apiResponse.avgColor[0] * 0.299 + apiResponse.avgColor[1] * 0.587 + apiResponse.avgColor[2] * 0.114); // RGBから明度を計算
+
+    const { error } = await supabase
+        .from('babypoo_log_table')
+        .insert([
+            {
+                // user_id: 'ユーザーのUUID', // 必要に応じてユーザーIDを設定
+                image: capturedImage, // 画像データを保存（必要に応じて）
+                recognized_color: apiResponse.avgColor, // AIが認識した色
+                color_code_value: colorCodeValue, // 計算したカラーコードの値
+                color_distance: 0, // 必要に応じて距離を設定
+                created_at: new Date().toISOString(),
+                save_count: 1, // 初回保存のため1
+            },
+        ]);
+
+    if (error) {
+        console.error('データの保存に失敗しました:', error.message); // エラーメッセージを表示
+        console.error('エラー詳細:', error); // エラーオブジェクト全体を表示
+    } else {
+        console.log('データが正常に保存されました');
+    }
+};
+
 return (
     <div className="container mx-auto px-4 py-8">
     <h1 className="text-2xl font-bold text-center mb-8">カメラで撮影し、画像認識を実行</h1>
@@ -285,7 +314,7 @@ return (
                 )}
                 <Button 
                     type="button" 
-                    onClick={() => {/* 結果を保存する処理 */}} 
+                    onClick={saveResult} 
                     className="mt-2"
                 >
                     結果を保存
