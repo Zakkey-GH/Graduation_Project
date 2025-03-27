@@ -283,6 +283,20 @@ return (
                     <p className="text-sm">AIが認識した色: RGB({Math.round(apiResponse.avgColor[0])}, {Math.round(apiResponse.avgColor[1])}, {Math.round(apiResponse.avgColor[2])})</p>
                 </div>
                 )}
+                <Button 
+                    type="button" 
+                    onClick={() => {/* 結果を保存する処理 */}} 
+                    className="mt-2"
+                >
+                    結果を保存
+                </Button>
+                <Button 
+                    type="button" 
+                    onClick={() => {/* 履歴を確認する処理 */}} 
+                    className="mt-2"
+                >
+                    履歴を確認
+                </Button>
             </div>
             )}
         </div>
