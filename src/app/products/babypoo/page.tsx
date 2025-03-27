@@ -112,7 +112,7 @@ const handleFileSubmit = async (e: React.FormEvent) => {
     }
 };
 
-// 画像をAPIに送信する関数
+// 画像をAPIに送信する関数です
 const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!capturedImage) return;
