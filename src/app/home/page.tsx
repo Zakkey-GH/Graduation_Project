@@ -94,6 +94,7 @@ return (
                             <ActionButton
                                 icon={<History className="h-5 w-5" />}
                                 label="お便り履歴"
+                                href="/babypooLog"
                             />
                         </Suspense>
                     </div>

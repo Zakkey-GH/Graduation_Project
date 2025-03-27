@@ -27,11 +27,12 @@ const config: NextConfig = {
   // ... existing code ...
   async redirects() {
     return [
-      {
-        source: '/',
-        destination: '/signup',
-        permanent: true,
-      },
+      // リダイレクトを無効にするか、条件を追加
+      // {
+      //   source: '/',
+      //   destination: '/signup',
+      //   permanent: true,
+      // },
     ]
   },
 }
