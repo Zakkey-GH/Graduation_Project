@@ -39,8 +39,17 @@ const [user, setUser] = useState<any>(null)
 useEffect(() => {
     // 現在のユーザー情報を取得
     const getCurrentUser = async () => {
-    const { data: { user } } = await supabase.auth.getUser()
-    setUser(user)
+        const { data: { session }, error } = await supabase.auth.getSession()
+        if (error) {
+            console.error("セッションの取得に失敗しました:", error)
+            return
+        }
+        if (session) {
+            const { user } = session
+            setUser(user)
+        } else {
+            console.log("ユーザーはログインしていません。")
+        }
     }
 
     getCurrentUser()
@@ -66,6 +75,11 @@ return (
         <p className="mx-auto mb-8 max-w-2xl text-lg text-gray-600">
             お便り管理で、ベビュニケーションをもっと手軽に
         </p>
+        {user && (
+            <p className="text-lg text-gray-800">
+                ようこそ！{user.email}さん
+            </p>
+        )}
         </section>
 
         {/* アクションボタンセクション */}
