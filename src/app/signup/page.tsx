@@ -17,23 +17,35 @@ const [message, setMessage] = useState("");
 
 const handleSignUp = async () => {
     try {
-    const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-    });
+        const { data, error } = await supabase.auth.signUp({
+            email,
+            password,
+        });
 
-    if (error) {
-        setMessage(`Error: ${error.message}`);
-        console.error('Signup error:', error);
-    } else {
-        setMessage(`${data.user?.email} でアカウントを作成しました。\nまもなく画面が変わります。`);
-        setTimeout(() => {
-            router.push(`/home?email=${encodeURIComponent(data.user?.email || '')}`);
-        }, 3000);
-    }
+        if (error) {
+            setMessage(`Error: ${error.message}`);
+            console.error('Signup error:', error);
+        } else {
+            // アカウント作成後に自動的にログイン
+            const { data, error: loginError } = await supabase.auth.signInWithPassword({
+                email,
+                password,
+            });
+
+            if (loginError) {
+                setMessage(`ログインエラー: ${loginError.message}`);
+                console.error('Login error:', loginError);
+            } else {
+                const user = data?.user; // data から user を取得
+                setMessage(`${user?.email} でアカウントを作成し、ログインしました。\nまもなく画面が変わります。`);
+                setTimeout(() => {
+                    router.push('/home');
+                }, 3000);
+            }
+        }
     } catch (e) {
-    console.error('Unexpected error:', e);
-    setMessage('サインアップ中に予期せぬエラーが発生しました。');
+        console.error('Unexpected error:', e);
+        setMessage('サインアップ中に予期せぬエラーが発生しました。');
     }
 };
 

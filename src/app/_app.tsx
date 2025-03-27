@@ -1,10 +1,13 @@
-import { UserProvider } from './context/UserContext';
 import { AppProps } from 'next/app';
+import { UserProvider } from './context/UserContext';
+import { SupabaseProvider } from './context/SupabaseContext';
 
 export default function App({ Component, pageProps }: AppProps) {
     return (
         <UserProvider>
-            <Component {...pageProps} />
+            <SupabaseProvider>
+                <Component {...pageProps} />
+            </SupabaseProvider>
         </UserProvider>
     );
-}
+} 

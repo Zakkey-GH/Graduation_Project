@@ -36,32 +36,51 @@ function ActionButton({ icon, label, onClick, href }: ActionButtonProps) {
 export default function HomePage() {
     const [user, setUser] = useState<any>(null)
 
-    useEffect(() => {
-        // 現在のユーザー情報を取得
-        const getCurrentUser = async () => {
-            const { data: { user } } = await supabase.auth.getUser()
-            setUser(user)
+useEffect(() => {
+    // 現在のユーザー情報を取得
+    const getCurrentUser = async () => {
+        const { data: { session }, error } = await supabase.auth.getSession()
+        if (error) {
+            console.error("セッションの取得に失敗しました:", error)
+            return
         }
+        if (session) {
+            const { user } = session
+            setUser(user)
+        } else {
+            console.log("ユーザーはログインしていません。")
+        }
+    }
 
         getCurrentUser()
     }, [])
 
-    return (
-        <main className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-            <div className="container mx-auto px-4 py-12 md:py-24">
-                <Suspense fallback={<div>Loading...</div>}>
-                    <Header />
-                </Suspense>
+// DBの操作例
+const handleDatabaseOperation = async () => {
+    const { data, error } = await supabase
+    .from('your_table')
+    .insert([
+        { user_id: user?.id, /* その他のデータ */ }
+    ])
+}
 
-                {/* ヒーローセクション */}
-                <section className="mb-16 text-center">
-                    <h1 className="mb-6 text-4xl font-bold tracking-tight text-gray-900 md:text-6xl">
-                        PeLeChe
-                    </h1>
-                    <p className="mx-auto mb-8 max-w-2xl text-lg text-gray-600">
-                        お便り管理で、ベビュニケーションをもっと手軽に
-                    </p>
-                </section>
+return (
+    <main className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+    <div className="container mx-auto px-4 py-12 md:py-24">
+        {/* ヒーローセクション */}
+        <section className="mb-16 text-center">
+        <h1 className="mb-6 text-4xl font-bold tracking-tight text-gray-900 md:text-6xl">
+            PeLeChe
+        </h1>
+        <p className="mx-auto mb-8 max-w-2xl text-lg text-gray-600">
+            お便り管理で、ベビュニケーションをもっと手軽に
+        </p>
+        {user && (
+            <p className="text-lg text-gray-800">
+                ようこそ！{user.email}さん
+            </p>
+        )}
+        </section>
 
                 {/* アクションボタンセクション */}
                 <section className="mx-auto max-w-md">

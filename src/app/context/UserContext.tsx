@@ -13,13 +13,13 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchUser = async () => {
+        const getCurrentUser = async () => {
             const { data: { user } } = await supabase.auth.getUser();
             setUser(user);
             setLoading(false);
         };
 
-        fetchUser();
+        getCurrentUser();
     }, []);
 
     return (
